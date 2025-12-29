@@ -1,22 +1,31 @@
 const http = require('http');
+const fs = require('fs');
 
-// function rqListener(req, res){
-
-// }
 
 const server = http.createServer((req, res) =>{
     console.log(req.url, req.method ,req.headers);
 
-    let url = req.url;
+    const url = req.url;
+    const method = req.method;
+    
 
     if(url === "/"){
 
     res.write("<html>");
     res.write("<head><title>My first page</title></head>");
-    res.write('<body><form action="/message" method="POST"> <input type="text"> button type="subtmit" </form</body>');
+    res.write('<body><form action="/message" method="POST"><input type="text" name="message"><button type="submit">Submit</button></form></body>');
     res.write("</html>");
     return res.end();
     }
+
+    if(url === '/message' & method === 'POST'){
+        fs.writeFileSync('message.txt', 'whatever');
+        //res.writeHead(300, {});
+        res.statusCode = 302;
+        res.setHeader('Location', '/');
+        return res.end();
+    }
+    
 
     res.setHeader('Content-type', 'text/html');
 
